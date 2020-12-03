@@ -1,19 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_mysqldb import MySQL
 
-
-
 app = Flask(__name__)
 app.secret_key = 'many random bytes'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'crud'
+app.config['MYSQL_DB'] = 'test_crud'
 
 mysql = MySQL(app)
-
-
 
 @app.route('/')
 def Index():
@@ -22,11 +18,7 @@ def Index():
     data = cur.fetchall()
     cur.close()
 
-
-
-
     return render_template('index2.html', students=data )
-
 
 
 @app.route('/insert', methods = ['POST'])
@@ -43,8 +35,6 @@ def insert():
         return redirect(url_for('Index'))
 
 
-
-
 @app.route('/delete/<string:id_data>', methods = ['GET'])
 def delete(id_data):
     flash("Record Has Been Deleted Successfully")
@@ -52,9 +42,6 @@ def delete(id_data):
     cur.execute("DELETE FROM students WHERE id=%s", (id_data,))
     mysql.connection.commit()
     return redirect(url_for('Index'))
-
-
-
 
 
 @app.route('/update',methods=['POST','GET'])
@@ -74,11 +61,6 @@ def update():
         flash("Data Updated Successfully")
         mysql.connection.commit()
         return redirect(url_for('Index'))
-
-
-
-
-
 
 
 
